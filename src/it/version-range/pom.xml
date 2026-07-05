@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.emergent.its.changeling</groupId>
+  <artifactId>version-range</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.11.0</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.emergent.maven.plugins</groupId>
+        <artifactId>changeling-maven-plugin</artifactId>
+        <version>@project.version@</version>
+        <extensions>true</extensions>
+        <configuration>
+          <replacements>
+            <!-- range does not contain 1.2.17: must NOT be applied -->
+            <replacement>
+              <from>log4j:log4j:[1.0,1.2)</from>
+              <to>ch.qos.reload4j:reload4j:1.2.26</to>
+            </replacement>
+            <!-- range contains 2.11.0: must be applied -->
+            <replacement>
+              <from>commons-io:commons-io:[2.0,2.15)</from>
+              <to>commons-io:commons-io:2.16.1</to>
+            </replacement>
+          </replacements>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.9.0</version>
+        <executions>
+          <execution>
+            <id>list-deps</id>
+            <goals>
+              <goal>list</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <outputFile>${project.build.directory}/deps.txt</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
