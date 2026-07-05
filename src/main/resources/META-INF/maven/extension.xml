@@ -1,0 +1,5 @@
+<extension>
+  <exportedPackages>
+    <exportedPackage>org.emergent.maven.relocator</exportedPackage>
+  </exportedPackages>
+</extension>
