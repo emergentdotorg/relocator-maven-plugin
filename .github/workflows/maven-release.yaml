@@ -1,0 +1,31 @@
+name: Perform Maven Release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'pom.xml'
+      - '**/src/**'
+      - '**/pom.xml'
+  workflow_dispatch:
+
+jobs:
+  maven-release:
+    name: Maven Release
+    runs-on: ubuntu-latest
+    steps:
+      - id: release
+        uses: emergentdotorg/github-actions/.github/workflows/maven-release.yaml@v4
+        with:
+            java-version: 17
+
+  process-results:
+    runs-on: ubuntu-latest
+    needs: maven-release
+    steps:
+      - run: echo version=${{ needs.maven-release.outputs.version }}
